@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cube World</title>
+  </head>
+
+  <body onload="main()">
+    <canvas id="webgl" width="1000" height="1000">
+    Please use a browser that supports "canvas"
+    </canvas>
+
+    <p id="header"></p>
+    <button id="resetButton">Reset Angle</button>
+
+    <p> Global Rotation </p>
+    <label for="globRotX">X-Axis</label>
+      <input type="range" min="0" max="360" value="0" class="slider" id="globRotSliderX">
+    <label for="globRotY">Y-Axis</label>
+      <input type="range" min="0" max="360" value="180" class="slider" id="globRotSliderY">
+    <label for="globRotZ">Z-Axis</label>
+      <input type="range" min="0" max="360" value="0" class="slider" id="globRotSliderZ">
+      
+
+    <script src="./lib/webgl-utils.js"></script>
+    <script src="./lib/webgl-debug.js"></script>
+    <script src="./lib/cuon-utils.js"></script>
+    <script src="./lib/cuon-matrix.js"></script>
+    <script src="main.js"></script>
+    <script src="drawShapes.js"></script>
+    <script src="shaderSources.js"></script>
+  </body>
+</html>
