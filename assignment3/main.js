@@ -3,9 +3,6 @@
 // var g_points = [];  // The array for the position of a mouse press
 // var g_colors = [];  // The array to store the color of a point
 
-eye = [0, 0, 0]
-at = [0, 0, -1]
-up = [0, 1, 0]
 
 function main() {
 	// Retrieve <canvas> element
@@ -26,136 +23,84 @@ function main() {
 
 	gl.enable(gl.DEPTH_TEST)
 
-  // Register function (event handler) to be called on a mouse press
-	// Create a buffer object
-  
-	// Bind the buffer object to target
+	var fov = 30;
+	var aspectRatio = canvas.width/canvas.height;
+	var near = 1;
+	var far = 300;
 
-	// canvas.onmousedown = function(ev) {click(ev, gl, canvas, a_Position, u_FragColor);}
-
-	// var globRotX = document.getElementById("globRotSliderX");
-	// var globRotY = document.getElementById("globRotSliderY");
-	// var globRotZ = document.getElementById("globRotSliderZ");
-
-	// var currentAngleX = globRotX.value;
-	// var currentAngleY = globRotY.value;
-	// var currentAngleZ = globRotZ.value;
-
-	// var rotationMatrix = new Matrix4();
-	// rotationMatrix.setRotate(currentAngleY, 0, 1, 0)
-	// var u_rotationMatrix = gl.getUniformLocation(gl.program, 'u_globalRotation');
-	// if (!u_rotationMatrix) {
-	//   console.log('Failed to get the storage location of u_rotationMatrix');
-	//   return;
-	// }
-	// gl.uniformMatrix4fv(u_rotationMatrix, false, rotationMatrix.elements);
-
-
-	// globRotX.oninput = function() {
-	// 	currentAngleX = globRotX.value;
-	// 	var rotationMatrix = new Matrix4();
-	// 	rotationMatrix.setRotate(currentAngleX, 1, 0, 0);
-	// 	rotationMatrix.rotate(currentAngleY, 0, 1, 0);
-	// 	rotationMatrix.rotate(currentAngleZ, 0, 0, 1);
-	// 	var u_rotationMatrix = gl.getUniformLocation(gl.program, 'u_globalRotation');
-	// 	if (!u_rotationMatrix) {
-	// 	  console.log('Failed to get the storage location of u_rotationMatrix');
-	// 	  return;
-	// 	}
-	// 	gl.uniformMatrix4fv(u_rotationMatrix, false, rotationMatrix.elements);
-
-	// 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-	// 	drawScene(gl);
-	// };
-
-	// globRotY.oninput = function() {
-	// 	currentAngleY = globRotY.value;
-	// 	var rotationMatrix = new Matrix4();
-	// 	rotationMatrix.setRotate(currentAngleX, 1, 0, 0);
-	// 	rotationMatrix.rotate(currentAngleY, 0, 1, 0);
-	// 	rotationMatrix.rotate(currentAngleZ, 0, 0, 1);
-	// 	var u_rotationMatrix = gl.getUniformLocation(gl.program, 'u_globalRotation');
-	// 	if (!u_rotationMatrix) {
-	// 	  console.log('Failed to get the storage location of u_rotationMatrix');
-	// 	  return;
-	// 	}
-	// 	gl.uniformMatrix4fv(u_rotationMatrix, false, rotationMatrix.elements);
-
-	// 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-	// 	drawScene(gl);
-	// };
-
-	// globRotZ.oninput = function() {
-	// 	currentAngleZ = globRotZ.value;
-	// 	var rotationMatrix = new Matrix4();
-	// 	rotationMatrix.setRotate(currentAngleX, 1, 0, 0);
-	// 	rotationMatrix.rotate(currentAngleY, 0, 1, 0);
-	// 	rotationMatrix.rotate(currentAngleZ, 0, 0, 1);
-	// 	var u_rotationMatrix = gl.getUniformLocation(gl.program, 'u_globalRotation');
-	// 	if (!u_rotationMatrix) {
-	// 	  console.log('Failed to get the storage location of u_rotationMatrix');
-	// 	  return;
-	// 	}
-	// 	gl.uniformMatrix4fv(u_rotationMatrix, false, rotationMatrix.elements);
-
-	// 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-	// 	drawScene(gl);
-	// };
-
-	// var resetButton = document.getElementById('resetButton');
-	// resetButton.onclick = function() {
-	// 	globRotX.value = 0;
-	// 	globRotY.value = 180;
-	// 	globRotZ.value = 0;
-
-	// 	rotationMatrix.setRotate(180, 0, 1, 0);
-	// 	var u_rotationMatrix = gl.getUniformLocation(gl.program, 'u_globalRotation');
-	// 	if (!u_rotationMatrix) {
-	// 	  console.log('Failed to get the storage location of u_rotationMatrix');
-	// 	  return;
-	// 	}
-	// 	gl.uniformMatrix4fv(u_rotationMatrix, false, rotationMatrix.elements);
-
-	// 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-	// 	drawScene(gl);
-	// }
-
-
+	var eye = [0, 1, 0];
+	var at = [0, 1, -1];
+	var up = [0, 1, 0];
 
 	var u_projectionMatrix = gl.getUniformLocation(gl.program, 'u_projectionMatrix');
 	var u_viewMatrix = gl.getUniformLocation(gl.program, 'u_viewMatrix');
 
-	identityMatrix = new Matrix4();
-	identityMatrix.setIdentity();
+	perspectiveMatrix = new Matrix4();
+	perspectiveMatrix.setPerspective(fov, aspectRatio, near, far);
 
 	lookAtMatrix = new Matrix4();
-	//					   eyes			at			up
-	lookAtMatrix.setLookAt(0, 0, 0,    0, .5, -1,    0, 1, 0);
+	lookAtMatrix.setLookAt(eye[0], eye[1], eye[2], at[0], at[1], at[2], up[0], up[1], up[2]);
 
-	gl.uniformMatrix4fv(u_projectionMatrix, false, identityMatrix.elements);
+	gl.uniformMatrix4fv(u_projectionMatrix, false, perspectiveMatrix.elements);
 	gl.uniformMatrix4fv(u_viewMatrix, false, lookAtMatrix.elements);
 
 
-	canvas.onmousedown = function(ev) {click(ev, canvas);}
+	document.onkeydown = function(ev) {
+		keydown(ev, gl, u_viewMatrix, lookAtMatrix, eye, at, up);
+		drawScene(gl)
+	}
 		
 	gl.clearColor(0.0, 0.0, 0.0, 1.0);
 	gl.clear(gl.COLOR_BUFFER_BIT);
- 
 	//draw your scene here
 	drawScene(gl);
+
 }
 
-//helper function for you to locate coords for drawing lmao
-function click(ev, canvas) {
+function keydown(ev, gl, viewMatrix, lookAtMatrix, eye, at, up) {
+	var dirX = at[0] - eye[0];
+	var dirY = at[1] - eye[1];
+	var dirZ = at[2] - eye[2];
 
-	var x = ev.clientX; // x coordinate of a mouse pointer
-	var y = ev.clientY; // y coordinate of a mouse pointer
-	var rect = ev.target.getBoundingClientRect();
+	// console.log(dirX);
+	// console.log(dirY);
+	// console.log(dirZ);
+	console.log(at)
+	console.log(eye)
 
-	x = ((x - rect.left) - canvas.width/2)/(canvas.width/2);
-	y = (canvas.height/2 - (y - rect.top))/(canvas.height/2);
+	if (ev.keyCode == 87) { // w
+		
+		eye[0] = eye[0] + dirX;
+		eye[2] = eye[2] + dirZ; 
 
-	console.log("x:" + x)
-	console.log("y:" + y)
+		at[0] = at[0] + dirX;
+		at[2] = at[2] + dirZ; 
+
+	} else if (ev.keyCode == 68) { // d
+		eye[0] = eye[0] - dirZ;
+		eye[2] = eye[2] - dirX; 
+
+		at[0] = at[0] - dirZ; 
+		at[2] = at[2] - dirX; 
+
+	} else if (ev.keyCode == 83) { // s
+
+		eye[0] = eye[0] - dirX;
+		eye[2] = eye[2] - dirZ; 
+
+		at[0] = at[0] - dirX; 
+		at[2] = at[2] - dirZ; 
+
+	} else if (ev.keyCode == 65) { // a
+
+		eye[0] = eye[0] + dirZ;
+		eye[2] = eye[2] + dirX; 
+
+		at[0] = at[0] + dirZ; 
+		at[2] = at[2] + dirX; 
+	}
+	
+	lookAtMatrix.setLookAt(eye[0], eye[1], eye[2], at[0], at[1], at[2], up[0], up[1], up[2]);
+	gl.uniformMatrix4fv(viewMatrix, false, lookAtMatrix.elements);
+
 }
-

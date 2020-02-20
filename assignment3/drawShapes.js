@@ -12,40 +12,40 @@ function initBuffers(gl, x, y, z, size, rgb){
 		x+size, y+size, z+size,	R, G, B,
 		x+size, y-size, z+size,	R, G, B,
 		//front face              
-		x-size, y+size, z-size, R, G, B,
-		x+size, y+size, z-size, R, G, B,
-		x-size, y-size, z-size, R, G, B,
-		x-size, y-size, z-size, R, G, B,
-		x+size, y+size, z-size, R, G, B,
-		x+size, y-size, z-size, R, G, B,
-		//right face    
-		x-size, y+size, z+size, R, G, B,
-		x-size, y+size, z-size, R, G, B,
-		x-size, y-size, z+size, R, G, B,
-		x-size, y-size, z+size, R, G, B,
-		x-size, y+size, z-size, R, G, B,
-		x-size, y-size, z-size, R, G, B,
-		//left face   
-		x+size, y+size, z+size, R, G, B,
-		x+size, y+size, z-size, R, G, B,
-		x+size, y-size, z+size, R, G, B,
-		x+size, y-size, z+size, R, G, B,
-		x+size, y+size, z-size, R, G, B,
-		x+size, y-size, z-size, R, G, B,
-		//top face     
-		x-size, y+size, z-size, R, G, B,
-		x+size, y+size, z-size, R, G, B,
-		x-size, y+size, z+size, R, G, B,
-		x-size, y+size, z+size, R, G, B,
-		x+size, y+size, z-size, R, G, B,
-		x+size, y+size, z+size, R, G, B,
-		//bottom face  
-		x-size, y-size, z-size, R, G, B,  
-		x+size, y-size, z-size, R, G, B,
-		x-size, y-size, z+size, R, G, B,
-		x-size, y-size, z+size, R, G, B,
-		x+size, y-size, z-size, R, G, B,
-		x+size, y-size, z+size, R, G, B
+		x-size, y+size, z-size, R-.15, G-.15, B-.15,
+		x+size, y+size, z-size, R-.15, G-.15, B-.15,
+		x-size, y-size, z-size, R-.15, G-.15, B-.15,
+		x-size, y-size, z-size, R-.15, G-.15, B-.15,
+		x+size, y+size, z-size, R-.15, G-.15, B-.15,
+		x+size, y-size, z-size, R-.15, G-.15, B-.15,
+		//right face                
+		x-size, y+size, z+size, R-.30, G-.30, B-.30,
+		x-size, y+size, z-size, R-.30, G-.30, B-.30,
+		x-size, y-size, z+size, R-.30, G-.30, B-.30,
+		x-size, y-size, z+size, R-.30, G-.30, B-.30,
+		x-size, y+size, z-size, R-.30, G-.30, B-.30,
+		x-size, y-size, z-size, R-.30, G-.30, B-.30,
+		//left face               
+		x+size, y+size, z+size, R-.45, G-.45, B-.45,
+		x+size, y+size, z-size, R-.45, G-.45, B-.45,
+		x+size, y-size, z+size, R-.45, G-.45, B-.45,
+		x+size, y-size, z+size, R-.45, G-.45, B-.45,
+		x+size, y+size, z-size, R-.45, G-.45, B-.45,
+		x+size, y-size, z-size, R-.45, G-.45, B-.45,
+		//top face                 
+		x-size, y+size, z-size, R-.60, G-.60, B-.60,
+		x+size, y+size, z-size, R-.60, G-.60, B-.60,
+		x-size, y+size, z+size, R-.60, G-.60, B-.60,
+		x-size, y+size, z+size, R-.60, G-.60, B-.60,
+		x+size, y+size, z-size, R-.60, G-.60, B-.60,
+		x+size, y+size, z+size, R-.60, G-.60, B-.60,
+		//bottom face              
+		x-size, y-size, z-size, R-.75, G-.75, B-.75,  
+		x+size, y-size, z-size, R-.75, G-.75, B-.75,
+		x-size, y-size, z+size, R-.75, G-.75, B-.75,
+		x-size, y-size, z+size, R-.75, G-.75, B-.75,
+		x+size, y-size, z-size, R-.75, G-.75, B-.75,
+		x+size, y-size, z+size, R-.75, G-.75, B-.75
 	];
 	var n = 36; // The number of vertices
 	
@@ -95,18 +95,32 @@ function drawFloor(gl){
 	var u_transformationMatrix = gl.getUniformLocation(gl.program, 'u_transformMatrix');
 	n = initBuffers(gl, 0, 0, 0, .15, [0, 1, 0]);
 	flatten = new Matrix4();
-	flatten.setScale(2, 0, 2);
+	flatten.setScale(256, 0, 256);
 	gl.uniformMatrix4fv(u_transformationMatrix, false, flatten.elements);
 	drawCube(gl, n, 0);
 }
+
+function drawWalls(gl){
+	//each cube should be 8x8x8
+	var wallGrid = [
+		[0,    0,    0,    0,    0,    0], //row 1
+		[0,    0,    0,    0,    0,    0],
+		[0,    0,    0,    0,    0,    0],
+		[0,    0,    0,    0,    0,    0],
+		[0,    0,    0,    0,    0,    0],
+		[0,    0,    0,    0,    0,    0], // row6
+	]//col1						  	  col6
+}
+
 function drawSky(gl){
 	var u_transformationMatrix = gl.getUniformLocation(gl.program, 'u_transformMatrix');
-	n = initBuffers(gl, 0, 0, 0, 1, [0, 0, 1]);
+	n = initBuffers(gl, 0, 0, 0, .15, [0, 0, 1]);
 	flatten = new Matrix4();
-	flatten.setScale(5, 5, 5);
+	flatten.setScale(256, 512, 256);
 	gl.uniformMatrix4fv(u_transformationMatrix, false, flatten.elements);
 	drawCube(gl, n, 0);
 }
+
 
 function drawScene(gl) {
 	drawFloor(gl);
