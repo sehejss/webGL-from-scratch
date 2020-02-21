@@ -3,6 +3,8 @@
 // var g_points = [];  // The array for the position of a mouse press
 // var g_colors = [];  // The array to store the color of a point
 
+//sadly this needs to be global
+var ang = 0;
 
 function main() {
 	// Retrieve <canvas> element
@@ -31,6 +33,7 @@ function main() {
 	var eye = [0, 1, 0];
 	var at = [0, 1, -1];
 	var up = [0, 1, 0];
+	var currentAngle = 0;
 
 	var u_projectionMatrix = gl.getUniformLocation(gl.program, 'u_projectionMatrix');
 	var u_viewMatrix = gl.getUniformLocation(gl.program, 'u_viewMatrix');
@@ -98,6 +101,28 @@ function keydown(ev, gl, viewMatrix, lookAtMatrix, eye, at, up) {
 
 		at[0] = at[0] + dirZ; 
 		at[2] = at[2] + dirX; 
+	} else if (ev.keyCode == 81) { // q
+
+		ang = ang + (1*(Math.PI / 180))
+		console.log( (1*(Math.PI / 180)) )
+		at[0] = ((eye[0] - at[0]) * Math.cos(ang)) - ((at[2] - eye[2]) * Math.sin(ang)) + eye[0]
+		at[2] = ((eye[2] - at[2]) * Math.cos(ang)) - ((at[0] - eye[0]) * Math.sin(ang)) + eye[2]
+		console.log(ang)
+
+	} else if (ev.keyCode == 69) { // e
+
+		ang = ang - (1*(Math.PI / 180))
+
+		var rotatedX = Math.cos(angle) * (point.x - center.x) - Math.sin(angle) * (point.y-center.y) + center.x;
+		var rotatedY = Math.sin(angle) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y;
+
+		var at[0] = Math.cos(ang) * (point.x - center.x) - Math.sin(angle) * (point.y-center.y) + center.x;
+		var at[2] = Math.sin(ang) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y;
+
+		at[0] = ((eye[0] - at[0]) * Math.cos(ang)) - ((at[2] - eye[2]) * Math.sin(ang)) + eye[0]
+		at[2] = ((eye[2] - at[2]) * Math.cos(ang)) - ((at[0] - eye[0]) * Math.sin(ang)) + eye[2]
+		console.log(ang)
+
 	}
 	
 	lookAtMatrix.setLookAt(eye[0], eye[1], eye[2], at[0], at[1], at[2], up[0], up[1], up[2]);
