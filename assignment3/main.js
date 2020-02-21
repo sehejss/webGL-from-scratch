@@ -4,7 +4,7 @@
 // var g_colors = [];  // The array to store the color of a point
 
 //sadly this needs to be global
-var ang = 0;
+var ang = 180 * (Math.PI/180);
 
 function main() {
 	// Retrieve <canvas> element
@@ -30,8 +30,8 @@ function main() {
 	var near = 1;
 	var far = 300;
 
-	var eye = [0, 1, 0];
-	var at = [0, 1, -1];
+	var eye = [0, 2, 0];
+	var at = [0, 2, -1];
 	var up = [0, 1, 0];
 	var currentAngle = 0;
 
@@ -103,25 +103,21 @@ function keydown(ev, gl, viewMatrix, lookAtMatrix, eye, at, up) {
 		at[2] = at[2] + dirX; 
 	} else if (ev.keyCode == 81) { // q
 
-		ang = ang + (1*(Math.PI / 180))
-		console.log( (1*(Math.PI / 180)) )
-		at[0] = ((eye[0] - at[0]) * Math.cos(ang)) - ((at[2] - eye[2]) * Math.sin(ang)) + eye[0]
-		at[2] = ((eye[2] - at[2]) * Math.cos(ang)) - ((at[0] - eye[0]) * Math.sin(ang)) + eye[2]
-		console.log(ang)
+		ang = ang + (5*(Math.PI / 180))
+
+		at[0] = Math.cos(ang) * (at[0] - eye[0]) - Math.sin(ang) * (at[2] - eye[2]) + eye[0];
+		at[2] = Math.sin(ang) * (at[0] - eye[0]) + Math.cos(ang) * (at[2] - eye[2]) + eye[2];
+
+		console.log(ang * (180/Math.PI))
 
 	} else if (ev.keyCode == 69) { // e
 
-		ang = ang - (1*(Math.PI / 180))
+		ang = ang - (5*(Math.PI / 180))
 
-		var rotatedX = Math.cos(angle) * (point.x - center.x) - Math.sin(angle) * (point.y-center.y) + center.x;
-		var rotatedY = Math.sin(angle) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y;
+		at[0] = Math.cos(ang) * (at[0] - eye[0]) - Math.sin(ang) * (at[2] - eye[2]) + eye[0];
+		at[2] = Math.sin(ang) * (at[0] - eye[0]) + Math.cos(ang) * (at[2] - eye[2]) + eye[2];
 
-		var at[0] = Math.cos(ang) * (point.x - center.x) - Math.sin(angle) * (point.y-center.y) + center.x;
-		var at[2] = Math.sin(ang) * (point.x - center.x) + Math.cos(angle) * (point.y - center.y) + center.y;
-
-		at[0] = ((eye[0] - at[0]) * Math.cos(ang)) - ((at[2] - eye[2]) * Math.sin(ang)) + eye[0]
-		at[2] = ((eye[2] - at[2]) * Math.cos(ang)) - ((at[0] - eye[0]) * Math.sin(ang)) + eye[2]
-		console.log(ang)
+		console.log(ang * (180/Math.PI))
 
 	}
 	
