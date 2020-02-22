@@ -7,15 +7,19 @@ var VSHADER_SOURCE =
   'uniform mat4 u_projectionMatrix;\n' +
   'uniform mat4 u_viewMatrix;\n' +
   'uniform mat4 u_transformMatrix;\n' +
+  'attribute vec2 a_TexCoord;\n' +
+  'varying vec2 v_TexCoord;\n' +
   'void main() {\n' +
   '  gl_Position = u_projectionMatrix * u_viewMatrix * u_transformMatrix * a_Position;\n' +
-  '  v_Color = a_Color;\n' +  // Pass the data to the fragment shader
+  '  v_TexCoord = a_TexCoord;\n' +
   '}\n';
 
 // Fragment shader program
 var FSHADER_SOURCE =
   'precision mediump float;\n' + // Precision qualifier (See Chapter 6)
   'varying vec4 v_Color;\n' +    // Receive the data from the vertex shader
+  'uniform sampler2D u_Sampler;\n' +
+  'varying vec2 v_TexCoord;\n' +
   'void main() {\n' +
-  '  gl_FragColor = v_Color;\n' +
+  '  gl_FragColor = texture2D(u_Sampler, v_TexCoord);\n' +
   '}\n';

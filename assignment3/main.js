@@ -6,6 +6,16 @@
 //sadly this needs to be global
 var ang = 180 * (Math.PI/180);
 
+var sky = new Image();
+sky.src = './resources/sky.jpg';
+
+var pumpkin = new Image();
+pumpkin.src = './resources/pumpkin.jpg';
+
+var grass = new Image();
+grass.src = './resources/grass.jpg';
+
+
 function main() {
 	// Retrieve <canvas> element
 	var canvas = document.getElementById('webgl');
@@ -55,6 +65,7 @@ function main() {
 		
 	gl.clearColor(0.0, 0.0, 0.0, 1.0);
 	gl.clear(gl.COLOR_BUFFER_BIT);
+	
 	//draw your scene here
 	drawScene(gl);
 
