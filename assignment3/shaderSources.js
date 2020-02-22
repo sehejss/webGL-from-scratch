@@ -11,6 +11,7 @@ var VSHADER_SOURCE =
   'varying vec2 v_TexCoord;\n' +
   'void main() {\n' +
   '  gl_Position = u_projectionMatrix * u_viewMatrix * u_transformMatrix * a_Position;\n' +
+  '  v_Color = a_Color;\n' +  // Pass the data to the fragment shader
   '  v_TexCoord = a_TexCoord;\n' +
   '}\n';
 
@@ -21,5 +22,5 @@ var FSHADER_SOURCE =
   'uniform sampler2D u_Sampler;\n' +
   'varying vec2 v_TexCoord;\n' +
   'void main() {\n' +
-  '  gl_FragColor = texture2D(u_Sampler, v_TexCoord);\n' +
+  '  gl_FragColor = v_Color + texture2D(u_Sampler, v_TexCoord);\n' +
   '}\n';
