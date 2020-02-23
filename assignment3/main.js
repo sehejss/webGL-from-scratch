@@ -43,7 +43,7 @@ function main() {
 
 	gl.enable(gl.DEPTH_TEST)
 
-	var fov = 30;
+	var fov = 60;
 	var aspectRatio = canvas.width/canvas.height;
 	var near = 1;
 	var far = 300;
